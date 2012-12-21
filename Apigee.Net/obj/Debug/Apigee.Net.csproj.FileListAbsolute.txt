@@ -10,3 +10,14 @@ F:\Projects\Apigee.Net\Apigee.Net\bin\Debug\Krystalware.UploadHelper.pdb
 F:\Projects\Apigee.Net\Apigee.Net\bin\Debug\Newtonsoft.Json.xml
 F:\Projects\Apigee.Net\Apigee.Net\obj\Debug\Apigee.Net.dll
 F:\Projects\Apigee.Net\Apigee.Net\obj\Debug\Apigee.Net.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\obj\Debug\Apigee.Net.csprojResolveAssemblyReference.cache
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\obj\Debug\Apigee.Net.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\obj\Debug\Apigee.Net.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Apigee.Net.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Apigee.Net.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\fastJSON.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Krystalware.UploadHelper.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\fastJSON.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Krystalware.UploadHelper.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net\bin\Debug\Newtonsoft.Json.xml

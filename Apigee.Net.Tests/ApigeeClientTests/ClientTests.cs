@@ -23,20 +23,20 @@ namespace Apigee.Net.Tests.ApigeeClientTests
         public void CreateAccountTest()
         {
             string un = "apigee_" + Guid.NewGuid();
-            var result = aClient.CreateAccount(new ApigeeUserModel {
+            var result = aClient.CreateAccount(new ApigeeUser {
                 Username = un,
                 Password = "abc123",
                 Email = un + "@sympletech.com"
             });
 
-            Assert.IsNotEmpty(result.Uuid);
+            Assert.IsNotEmpty(result);
         }
 
         [Test]
         public void UpdateAccountTest()
         {
             string un = "bobby";
-            var result = aClient.UpdateAccount(new ApigeeUserModel
+            var result = aClient.UpdateAccount(new ApigeeUser
             {
                 Username = un,
                 Password = "abc123",
@@ -71,7 +71,7 @@ namespace Apigee.Net.Tests.ApigeeClientTests
             string un = "apigee_" + Guid.NewGuid();
 
             //Create a new Account
-            apiClient.CreateAccount(new ApigeeUserModel
+            apiClient.CreateAccount(new ApigeeUser
             {
                 Username = un,
                 Password = "abc123",
@@ -79,7 +79,7 @@ namespace Apigee.Net.Tests.ApigeeClientTests
             });
 
             //Update an Existing Account
-            apiClient.UpdateAccount(new ApigeeUserModel
+            apiClient.UpdateAccount(new ApigeeUser
             {
                 Username = un,
                 Password = "abc123456",

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Apigee.Net.Models.ApiResponse;
 using Apigee.Net.Networking;
 using Apigee.Net.Models;
-using Newtonsoft.Json.Linq;
+
 
 namespace Apigee.Net
 {
@@ -50,7 +49,7 @@ namespace Apigee.Net
             return sbResult.ToString();
         }
 
-        private JToken GetEntitiesFromJson(string rawJson)
+        private object GetEntitiesFromJson(string rawJson)
         {
             if (string.IsNullOrEmpty(rawJson) != true)
             {
@@ -80,7 +79,7 @@ namespace Apigee.Net
         public retrunT PerformRequest<retrunT>(string path, HttpTools.RequestTypes method, object data)
         {
             string requestPath = BuildPath(path);
-            return HttpTools.PerformJsonRequest<retrunT>(requestPath, method, data);
+            return ProtLib.IProtLibHTTPTools.PerformJsonRequest<retrunT>(requestPath, method, data);
         }
 
         
