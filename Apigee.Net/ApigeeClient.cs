@@ -116,6 +116,48 @@ namespace Apigee.Net
             return results;
         }
 
+        /// <summary>
+        /// uses the Role Uuid in request
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public List<ApigeeUser> GetRoleUsers(ApigeeRole role)
+        {
+            return GetRoleUsers(role.Uuid);
+        }
+        /// <summary>
+        /// uses the RoleName provided in the  request
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
+        public List<ApigeeUser> GetRoleUsers(string roleName)
+        {
+            var rawResults = PerformRequest<string>("/roles/"+roleName+"/users");
+            var users = GetEntitiesFromJson(rawResults);
+
+            List<ApigeeUser> results = new List<ApigeeUser>();
+            foreach (var usr in users)
+            {
+                results.Add(new ApigeeUser
+                {
+                    Uuid = (usr["uuid"] ?? "").ToString(),
+                    Username = (usr["username"] ?? "").ToString(),
+                    Password = (usr["password"] ?? "").ToString(),
+                    Lastname = (usr["lastname"] ?? "").ToString(),
+                    Firstname = (usr["firstname"] ?? "").ToString(),
+                    Title = (usr["title"] ?? "").ToString(),
+                    Email = (usr["Email"] ?? "").ToString(),
+                    Tel = (usr["tel"] ?? "").ToString(),
+                    HomePage = (usr["homepage"] ?? "").ToString(),
+                    Bday = (usr["bday"] ?? "").ToString(),
+                    Picture = (usr["picture"] ?? "").ToString(),
+                    Url = (usr["url"] ?? "").ToString()
+                });
+            }
+
+            return results;
+        }
+
 
         public List<ApigeeGroup> GetGroups()
         {
@@ -171,19 +213,43 @@ namespace Apigee.Net
         }
 
         
-        public string CreateAppUser(ApigeeUser accountModel)
+        public string CreateAppUser(ApigeeUser newAppUser)
         {
-            var rawResults = PerformRequest<string>("/users", HttpTools.RequestTypes.Post, accountModel);
+            var rawResults = PerformRequest<string>("/users", HttpTools.RequestTypes.Post, newAppUser);
             var entitiesResult = GetEntitiesFromJson(rawResults);
             if (entitiesResult != null)
             {
+                var newUserUuid = entitiesResult[0]["uuid"].ToString();
+                AddRole2User(newUserUuid, "appuser");   //Add AppUser role
+                return newUserUuid;
+            }
+            else
+            {
+                return UpdateAccount(newAppUser);
+            }
+        }
+
+        public string AddRole2User(ApigeeUser user, string newRole)
+        {
+            return AddRole2User(user.Uuid, newRole);
+        }
+
+        public string AddRole2User(String userUuid, string newRole)
+        {
+            var path = "/users/" + userUuid + "/roles/" + newRole;
+            var rawResults = PerformRequest<string>(path, HttpTools.RequestTypes.Post, "" );
+            var entitiesResult = GetEntitiesFromJson(rawResults);
+            if (entitiesResult != null)
+            {
+
                 return entitiesResult[0]["uuid"].ToString();
             }
             else
             {
-                return UpdateAccount(accountModel);
+                throw new InvalidOperationException("Failed to add role ["+newRole+"] to user ("+userUuid+")");
             }
         }
+
 
         public string UpdateAccount(ApigeeUser accountModel)
         {
@@ -218,3 +284,6 @@ namespace Apigee.Net
 
     }
 }
+
+
+

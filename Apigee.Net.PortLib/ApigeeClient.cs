@@ -5,27 +5,37 @@ using System.Text;
 using Apigee.Net.Models.ApiResponse;
 using Apigee.Net.Networking;
 using Apigee.Net.Models;
+using Newtonsoft.Json.Linq;
 
-
-namespace Apigee.Net
+namespace Apigee.Net.PortLib
 {
     public class ApigeeClient
     {
+
+        #region Public Members
+        
+        public string UserGridUrl { get; set; }
+        
+        // All Implementation Interfaces
+        public IHttpTools IhttpTools;
+        //-------------------------------
+        #endregion
+
+
         /// <summary>
         /// Create a new Apigee Client
         /// </summary>
         /// <param name="userGridUrl">The Base URL To the UserGrid</param>
-        public ApigeeClient(string userGridUrl)
+        public ApigeeClient(string userGridUrl, ImplementationStruct currentImple)
         {
             this.UserGridUrl = userGridUrl;
+            this.IhttpTools = currentImple.iHttpTools;
         }
-
-        public string UserGridUrl { get; set; }
 
         #region Core Worker Methods
 
         /// <summary>
-        /// Combines The UserGridUrl abd a provided path - checking to emsure proper http formatting
+        /// Combines The UserGridUrl and a provided path - checking to ensure proper http formatting
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -49,7 +59,7 @@ namespace Apigee.Net
             return sbResult.ToString();
         }
 
-        private object GetEntitiesFromJson(string rawJson)
+        private JToken GetEntitiesFromJson(string rawJson)
         {
             if (string.IsNullOrEmpty(rawJson) != true)
             {
@@ -79,10 +89,8 @@ namespace Apigee.Net
         public retrunT PerformRequest<retrunT>(string path, HttpTools.RequestTypes method, object data)
         {
             string requestPath = BuildPath(path);
-            return ProtLib.IProtLibHTTPTools.PerformJsonRequest<retrunT>(requestPath, method, data);
+            return IhttpTools.PerformJsonRequest<retrunT>(requestPath, method, data);
         }
-
-        
 
         #endregion
 

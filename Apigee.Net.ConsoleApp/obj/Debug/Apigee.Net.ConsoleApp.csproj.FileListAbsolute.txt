@@ -1,0 +1,2 @@
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ConsoleApp.exe.config
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\obj\Debug\Apigee.Net.ConsoleApp.csprojResolveAssemblyReference.cache
