@@ -12,9 +12,9 @@ namespace Apigee.Net.Networking
         public enum RequestTypes { Get, Post, Put, Delete }
 
         //Converts an object to a name value collection (for posts)
-        private static Dictionary<string, string> ObjectToNameValueCollection<T>(T obj)
+        public static Dictionary<string, string> ObjectToNameValueCollection<T>(T obj)
         {
-            Dictionary<string, string> results = new Dictionary<string, string>();
+            var results = new Dictionary<string, string>();
 
             var oType = typeof(T);
             foreach (var prop in oType.GetProperties())

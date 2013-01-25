@@ -1,5 +1,6 @@
 ﻿using Apigee.Net.Networking;
 using Apigee.Net.PortLib;
+using Krystalware.UploadHelper;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,6 +19,7 @@ namespace Apigee.Net.ConsoleApp
         public string PerformGet(string url)
         {
             WebRequest req = WebRequest.Create(url);
+
             WebResponse resp = req.GetResponse();
             StreamReader sr = new StreamReader(resp.GetResponseStream());
             return sr.ReadToEnd().Trim();
@@ -27,38 +29,45 @@ namespace Apigee.Net.ConsoleApp
 
         #region Post
 
-        public ReturnT PerformPost<ReturnT>(string url)
+        public  ReturnT PerformPost<ReturnT>(string url)
         {
             return PerformPost<object, ReturnT>(url, new object());
         }
-        public ReturnT PerformPost<PostT, ReturnT>(string url, PostT postData)
-        {
-            return PerformPost<PostT, ReturnT>(url, postData, new NameValueCollection());
-        }
 
-        ReturnT PerformPost<PostT, ReturnT>(string url, PostT postData, Dictionary<string, string> filesDic);
-        public ReturnT PerformPost<PostT, ReturnT>(string url, PostT postData, Dictionary<string, string> files)
+        public  ReturnT PerformPost<PostT, ReturnT>(string url, PostT postData)
+        {
+            return PerformPost<PostT, ReturnT>(url, postData, new Dictionary<string,string>());
+        }
+        public ReturnT PerformPost<PostT, ReturnT>(string url, PostT postData, Dictionary<string,string> files)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-			NameValueCollection files 
-            NameValueCollection nvpPost;
-            if (typeof(PostT) == typeof(NameValueCollection))
+
+            Dictionary<string,string> dicPost;
+            if (typeof(PostT) == typeof(Dictionary<string, string>))
             {
-                nvpPost = postData as NameValueCollection;
+                dicPost = postData as Dictionary<string, string>;
             }
             else
             {
-                nvpPost = ObjectToNameValueCollection<PostT>(postData);
+                dicPost = HttpTools.ObjectToNameValueCollection<PostT>(postData);
             }
 
             List<UploadFile> postFiles = new List<UploadFile>();
-            foreach (var fKey in files.AllKeys)
+            foreach (var fKey in files.Keys)
             {
+                
                 FileStream fs = File.OpenRead(files[fKey]);
                 postFiles.Add(new UploadFile(fs, fKey, files[fKey], "application/octet-stream"));
             }
 
-            var response = HttpUploadHelper.Upload(req, postFiles.ToArray(), nvpPost);
+            //convert to nameValue
+            var nvcPost = new NameValueCollection();
+            foreach (KeyValuePair<string, string> pair in dicPost)
+            {
+                nvcPost[pair.Key] = pair.Value;
+            }
+
+            var response = HttpUploadHelper.Upload(req, postFiles.ToArray(), nvcPost );
 
             using (Stream s = response.GetResponseStream())
             using (StreamReader sr = new StreamReader(s))
@@ -73,26 +82,9 @@ namespace Apigee.Net.ConsoleApp
             }
         }
 
-        //Converts an object to a name value collection (for posts)
-        private NameValueCollection ObjectToNameValueCollection<T>(T obj)
-        {
-            NameValueCollection results = new NameValueCollection();
 
-            var oType = typeof(T);
-            foreach (var prop in oType.GetProperties())
-            {
-                string pVal = "";
-                try
-                {
-                    pVal = oType.GetProperty(prop.Name).GetValue(obj, null).ToString();
-                }
-                catch { }
-                results[prop.Name] = pVal;
-            }
-
-            return results;
-        }
-
+        //private NameValueCollection ObjectToNameValueCollection<T>(T obj)  --> Stayed in HttpTools (PortLib) with Dic<s,s>
+        
         #endregion
 
         #region JSON Request
@@ -101,9 +93,8 @@ namespace Apigee.Net.ConsoleApp
         {
             //Initilize the http request
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.ContentType = "application/json";
+            req.ContentType = "application/json";            
             req.Method = Enum.GetName(typeof(HttpTools.RequestTypes), method);
-
 
             //If posting data - serialize it to a json object
             if (method != HttpTools.RequestTypes.Get)

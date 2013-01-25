@@ -11,11 +11,14 @@ namespace Apigee.Net.PortLib
 {
     public class ApigeeClient
     {
-
+        #region Private Members
+        private string access_token;
+        #endregion
         #region Public Members
-        
+        public static string SUCCESS = "api_success";
         public string UserGridUrl { get; set; }
-        
+        public bool isAuthenticated { get; private set; }
+
         // All Implementation Interfaces
         public IHttpTools IhttpTools;
         //-------------------------------
@@ -30,6 +33,7 @@ namespace Apigee.Net.PortLib
         {
             this.UserGridUrl = userGridUrl;
             this.IhttpTools = currentImple.iHttpTools;
+            this.isAuthenticated = false;
         }
 
         #region Core Worker Methods
@@ -55,6 +59,12 @@ namespace Apigee.Net.PortLib
             }
 
             sbResult.Append(path);
+            
+            //Add authentication:
+            if (isAuthenticated)
+            {
+                sbResult.Append("?access_token=" + access_token);
+            }
 
             return sbResult.ToString();
         }
@@ -96,71 +106,107 @@ namespace Apigee.Net.PortLib
 
         #region Account Management
 
-        public List<ApigeeUser> GetUsers()
+        public ApigeeResponse GetUsers()
         {
             var rawResults = PerformRequest<string>("/users");
-            var users = GetEntitiesFromJson(rawResults);
-            
-            List<ApigeeUser> results = new List<ApigeeUser>();
-            foreach (var usr in users)
+            //parse response
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
             {
-                results.Add(new ApigeeUser { 
-                    Uuid = (usr["uuid"] ?? "").ToString(),
-                    Username = (usr["username"] ?? "").ToString(),
-                    Password = (usr["password"] ?? "").ToString(),
-                    Lastname = (usr["lastname"] ?? "").ToString(),
-                    Firstname = (usr["firstname"] ?? "").ToString(),
-                    Title = (usr["title"] ?? "").ToString(),
-                    Email = (usr["Email"] ?? "").ToString(),
-                    Tel = (usr["tel"] ?? "").ToString(),
-                    HomePage = (usr["homepage"] ?? "").ToString(),
-                    Bday = (usr["bday"] ?? "").ToString(),
-                    Picture = (usr["picture"] ?? "").ToString(),
-                    Url = (usr["url"] ?? "").ToString()
-                });
+                try
+                {
+                    List<ApigeeUser> results = new List<ApigeeUser>();
+                    foreach (var usr in (JToken)response.ResponseData)
+                    {
+                        results.Add(new ApigeeUser
+                        {
+                            Uuid = (usr["uuid"] ?? "").ToString(),
+                            Username = (usr["username"] ?? "").ToString(),
+                            Password = (usr["password"] ?? "").ToString(),
+                            Lastname = (usr["lastname"] ?? "").ToString(),
+                            Firstname = (usr["firstname"] ?? "").ToString(),
+                            Title = (usr["title"] ?? "").ToString(),
+                            Email = (usr["Email"] ?? "").ToString(),
+                            Tel = (usr["tel"] ?? "").ToString(),
+                            HomePage = (usr["homepage"] ?? "").ToString(),
+                            Bday = (usr["bday"] ?? "").ToString(),
+                            Picture = (usr["picture"] ?? "").ToString(),
+                            Url = (usr["url"] ?? "").ToString()
+                        });
+                    }
+                    // put users List as response data
+                    response.ResponseData = results;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing users entities");
+                }
             }
-
-            return results;
+            return response;
         }
 
 
-        public List<ApigeeGroup> GetGroups()
+        public ApigeeResponse GetGroups()
         {
             var rawResults = PerformRequest<string>("/groups");
-            var groups = GetEntitiesFromJson(rawResults);
-            
-            var results = new List<ApigeeGroup>();
-            foreach (var usr in groups)
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
             {
-                results.Add(new ApigeeGroup { 
-                    Uuid = (usr["uuid"] ?? "").ToString(),
-                    Created = (usr["created"] ?? "").ToString(),
-                    Path = (usr["path"] ?? "").ToString(),
-                    Title = (usr["title"] ?? "").ToString(),
-                });
-            }
-
-            return results;
+                try
+                {
+                    var results = new List<ApigeeGroup>();
+                    foreach (var usr in (JToken)response.ResponseData)
+                    {
+                        results.Add(new ApigeeGroup
+                        {
+                            Uuid = (usr["uuid"] ?? "").ToString(),
+                            Created = (usr["created"] ?? "").ToString(),
+                            Path = (usr["path"] ?? "").ToString(),
+                            Title = (usr["title"] ?? "").ToString(),
+                        });
+                    }
+                    // put groups list as response data
+                    response.ResponseData = results;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing Groups entities");
+                }
+            } 
+            return response;
         }
 
-        public List<ApigeeRole> GetRoles()
+        public ApigeeResponse GetRoles()
         {
             var rawResults = PerformRequest<string>("/roles");
-            var roles = GetEntitiesFromJson(rawResults);
-
-            var results = new List<ApigeeRole>();
-            foreach (var usr in roles)
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
             {
-                results.Add(new ApigeeRole
+                try
                 {
-                    Uuid = (usr["uuid"] ?? "").ToString(),
-                    Created = (usr["created"] ?? "").ToString(),
-                    RoleName = (usr["roleName"] ?? "").ToString(),
-                    Title = (usr["title"] ?? "").ToString(),
-                });
+                    var results = new List<ApigeeRole>();
+                    foreach (var usr in (JToken)response.ResponseData)
+                    {
+                        results.Add(new ApigeeRole
+                        {
+                            Uuid = (usr["uuid"] ?? "").ToString(),
+                            Created = (usr["created"] ?? "").ToString(),
+                            RoleName = (usr["roleName"] ?? "").ToString(),
+                            Title = (usr["title"] ?? "").ToString(),
+                        });
+                    }
+                    // put roles list as response data
+                    response.ResponseData = results;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing Roles entities");
+                }
             }
-
-            return results;
+            return response;
         }
 
         public string CreateGroup(ApigeeGroup newGroup)
@@ -177,19 +223,15 @@ namespace Apigee.Net.PortLib
             }
         }
 
-        
-        public string CreateAppUser(ApigeeUser accountModel)
+        public ApigeeResponse CreateAppUser(ApigeeUser accountModel)
         {
             var rawResults = PerformRequest<string>("/users", HttpTools.RequestTypes.Post, accountModel);
-            var entitiesResult = GetEntitiesFromJson(rawResults);
-            if (entitiesResult != null)
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
             {
-                return entitiesResult[0]["uuid"].ToString();
+                response.ResponseData = ((JToken)response.ResponseData)[0];
             }
-            else
-            {
-                return UpdateAccount(accountModel);
-            }
+            return response;
         }
 
         public string UpdateAccount(ApigeeUser accountModel)
@@ -201,27 +243,50 @@ namespace Apigee.Net.PortLib
 
         #endregion
 
-        #region Token Management
+        #region Private Token Management
 
-        public string GetToken(string username, string password)
+        private ApigeeResponse GetToken(string username, string password)
         {
             var reqString = string.Format("/token/?grant_type=password&username={0}&password={1}", username, password);
             var rawResults = PerformRequest<string>(reqString);
-            var results = JObject.Parse(rawResults);
-
-            return results["access_token"].ToString();
+            // paser response and let ApigeeResponse get you your wanted result
+            return new ApigeeResponse(JObject.Parse(rawResults), "access_token");
         }
-
-        public string LookUpToken(string token)
+        private ApigeeResponse LookUpToken(string token)
         {
             var reqString = "/users/me/?access_token=" + token;
             var rawResults = PerformRequest<string>(reqString);
             var entitiesResult = GetEntitiesFromJson(rawResults);
 
-            return entitiesResult[0]["username"].ToString();
+            return new ApigeeResponse(entitiesResult[0],"username");
         }
 
         #endregion
 
+
+        #region Authentication
+
+        public ApigeeResponse ManualAuthentication(string token)
+        {
+            //TODO Verify Token....
+
+            this.access_token = token;
+            this.isAuthenticated = true;
+            return new ApigeeResponse { success = true, ResponseData = token };
+        }
+        public ApigeeResponse AuthenticateUser(string user, string password)
+        {
+            var tokenResponse = GetToken(user, password);
+
+            if (!tokenResponse.success)
+                return tokenResponse;
+
+            //else - auth success
+            this.access_token = tokenResponse.ToString();
+            this.isAuthenticated = true;
+            return tokenResponse;
+        }
+        
+        #endregion
     }
 }

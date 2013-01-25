@@ -1,2 +1,12 @@
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ConsoleApp.exe.config
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\obj\Debug\Apigee.Net.ConsoleApp.csprojResolveAssemblyReference.cache
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ConsoleApp.exe
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ConsoleApp.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ProtLib.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Apigee.Net.ProtLib.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\fastJSON.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Krystalware.UploadHelper.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\obj\Debug\Apigee.Net.ConsoleApp.exe
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.ConsoleApp\obj\Debug\Apigee.Net.ConsoleApp.pdb
