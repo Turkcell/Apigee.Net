@@ -2,7 +2,9 @@
   <Deployment.Parts>
     <AssemblyPart x:Name="Apigee.Net.WP7_TestApp" Source="Apigee.Net.WP7_TestApp.dll" />
     <AssemblyPart x:Name="Apigee.Net.ProtLib" Source="Apigee.Net.ProtLib.dll" />
-    <AssemblyPart x:Name="System.Threading.Tasks.WP71" Source="System.Threading.Tasks.WP71.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
     <AssemblyPart x:Name="Newtonsoft.Json" Source="Newtonsoft.Json.dll" />
+    <AssemblyPart x:Name="RestSharp.WindowsPhone" Source="RestSharp.WindowsPhone.dll" />
+    <AssemblyPart x:Name="System.Threading.Tasks.WP71" Source="System.Threading.Tasks.WP71.dll" />
   </Deployment.Parts>
 </Deployment>

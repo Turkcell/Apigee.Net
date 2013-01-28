@@ -16,3 +16,7 @@ C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Syste
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Newtonsoft.Json.dll
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Apigee.Net.ProtLib.pdb
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Newtonsoft.Json.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Microsoft.Phone.Controls.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\Microsoft.Phone.Controls.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\RestSharp.WindowsPhone.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\RestSharp.WindowsPhone.xml

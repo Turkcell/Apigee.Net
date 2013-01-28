@@ -13,14 +13,13 @@ namespace Apigee.Net.PortLib
 
         //data
         public object ResponseData;
-
-        //private
-        private JObject rawResponse;
+        public string RawResponse { get; private set; }
 
         public ApigeeResponse() { }
 
         public ApigeeResponse(string rawData, bool ExtractEnteties) 
         {
+            RawResponse = rawData;
             if (!ExtractEnteties) return; //safty
             var enteties = GetEntitiesFromJson(rawData);
             if (enteties == null)
@@ -36,6 +35,7 @@ namespace Apigee.Net.PortLib
         }
  
         public ApigeeResponse(JObject rawData, string wantedKey) {
+            RawResponse = rawData.ToString();
             try
             {
                 this.ResponseData = rawData.SelectToken(wantedKey, true);
@@ -55,6 +55,7 @@ namespace Apigee.Net.PortLib
 
         public ApigeeResponse(JToken rawData, string wantedKey)
         {
+            RawResponse = rawData.ToString();
             try
             {
                 this.ResponseData = rawData[wantedKey];

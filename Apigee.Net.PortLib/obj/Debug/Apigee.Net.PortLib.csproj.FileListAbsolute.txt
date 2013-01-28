@@ -4,3 +4,4 @@ C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.PortLib\bin\Debug\Newtonsof
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.PortLib\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.PortLib\obj\Debug\Apigee.Net.ProtLib.dll
 C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.PortLib\obj\Debug\Apigee.Net.ProtLib.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.PortLib\obj\Debug\Apigee.Net.PortLib.csprojResolveAssemblyReference.cache

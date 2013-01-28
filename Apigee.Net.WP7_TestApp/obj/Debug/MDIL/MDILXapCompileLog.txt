@@ -10,8 +10,12 @@ MDIL image C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\obj\
 
 
 File C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\Apigee.Net.WP7_TestApp.dll output C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\obj\Debug\MDIL\Apigee.Net.WP7_TestApp.dll
+Processing file: C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\Microsoft.Phone.Controls.dll
+File C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\Microsoft.Phone.Controls.dll is not in the compile filter. Skipping.
 Processing file: C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\Newtonsoft.Json.dll
 File C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\Newtonsoft.Json.dll is not in the compile filter. Skipping.
+Processing file: C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\RestSharp.WindowsPhone.dll
+File C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\RestSharp.WindowsPhone.dll is not in the compile filter. Skipping.
 Processing file: C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\System.Threading.Tasks.WP71.dll
 File C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\System.Threading.Tasks.WP71.dll is not in the compile filter. Skipping.
 Processing file: C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.WP7_TestApp\Bin\Debug\MDIL\WMAppManifest.xml

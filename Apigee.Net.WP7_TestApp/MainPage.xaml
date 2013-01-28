@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
@@ -15,24 +16,42 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="Apigee.NET using Protable Library for WP7" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Test App" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,5,0,0">
+            <TextBlock x:Name="ApplicationTitle" Text="Test App - Protable Library for WP7" FontSize="25"/>
+            <TextBlock x:Name="PageTitle" Text="Apigee.NET" Margin="9,-7,0,0" FontSize="46"/>
+            <TextBlock x:Name="ApigeeURL" Text="Enter your Apgiee URL:" Margin="0,7,0,0" FontSize="30"/>
+            <TextBox   x:Name="tbApigeeUrl" Text="http://api.usergrid.com/zaxyinc/apigee.net" Margin="-9,-7,0,0" FontSize="25"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <Button x:Name="btnTest" Content="Test !"  Click="btnTest_Click_1"/>
-                <TextBlock x:Name="txtDebug" TextWrapping="Wrap"/>
-            </StackPanel>
-        </Grid>
+        <controls:Panorama Grid.Row="0" Margin="0,200,0,0" Title="">
+
+            <!--Panorama item one-->
+            <controls:PanoramaItem Header="Get" >
+                <Grid>
+                    <ScrollViewer>
+                        <StackPanel ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <Button x:Name="btnTestGet" Content="Test !"  Click="btnTest_Click_Get"/>
+                            <TextBlock x:Name="txtDebugGet" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </controls:PanoramaItem>
+
+            <!--Panorama item two-->
+            <controls:PanoramaItem Header="Post">
+                <Grid>
+                    <ScrollViewer>
+                        <StackPanel ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <Button x:Name="btnTestPost" Margin="0,0,0,0" Content="Test !"  Click="btnTest_Click_Post"/>
+                            <TextBlock x:Name="txtDebugPost" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </controls:PanoramaItem>
+        </controls:Panorama>
     </Grid>
  
 </phone:PhoneApplicationPage>
