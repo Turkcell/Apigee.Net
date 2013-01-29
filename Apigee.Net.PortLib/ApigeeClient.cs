@@ -123,8 +123,7 @@ namespace Apigee.Net.PortLib
                             Uuid = (usr["uuid"] ?? "").ToString(),
                             Username = (usr["username"] ?? "").ToString(),
                             Password = (usr["password"] ?? "").ToString(),
-                            Lastname = (usr["lastname"] ?? "").ToString(),
-                            Firstname = (usr["firstname"] ?? "").ToString(),
+                            Name = (usr["name"] ?? "").ToString(),
                             Title = (usr["title"] ?? "").ToString(),
                             Email = (usr["Email"] ?? "").ToString(),
                             Tel = (usr["tel"] ?? "").ToString(),
@@ -146,6 +145,43 @@ namespace Apigee.Net.PortLib
             return response;
         }
 
+        public ApigeeResponse GetUser(string username)
+        {
+            var rawResults = PerformRequest<string>("/users/"+ username);
+            //parse response
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
+            {
+                try
+                {   ApigeeUser user;
+                    var usr = ((JToken)response.ResponseData)[0];
+                    
+                    user = new ApigeeUser
+                    {
+                        Uuid = (usr["uuid"] ?? "").ToString(),
+                        Username = (usr["username"] ?? "").ToString(),
+                        Password = (usr["password"] ?? "").ToString(),
+                        Name = (usr["name"] ?? "").ToString(),
+                        Title = (usr["title"] ?? "").ToString(),
+                        Email = (usr["Email"] ?? "").ToString(),
+                        Tel = (usr["tel"] ?? "").ToString(),
+                        HomePage = (usr["homepage"] ?? "").ToString(),
+                        Bday = (usr["bday"] ?? "").ToString(),
+                        Picture = (usr["picture"] ?? "").ToString(),
+                        Url = (usr["url"] ?? "").ToString()
+                    };
+
+                    // put user as response data
+                    response.ResponseData = user;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing users entities");
+                }
+            }
+            return response;
+        }
 
         public ApigeeResponse GetGroups()
         {

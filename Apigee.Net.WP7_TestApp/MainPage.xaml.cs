@@ -38,8 +38,8 @@ namespace Apigee.Net.WP7_TestApp
             HttpWorker.DoWork += HttpWorker_DoWork;
             HttpWorker.RunWorkerCompleted += HttpWorker_RunWorkerCompleted;
             wp7Impl = new ApigeeWP7Implementation();
-            
 
+            tbApigeeUrl.Text = "http://api.usergrid.com/zaxyinc/sandbox";
         }
 
         private bool verifyURL()
@@ -75,11 +75,11 @@ namespace Apigee.Net.WP7_TestApp
             {
                 
                 case HttpTools.RequestTypes.Get:
-                    response = "Getting User List" + Environment.NewLine;
-                    response = apigeeServer.GetUsers().RawResponse; // wp7Impl.PerformGet(apigeeUrl + "/users");
+                    response = "Getting User zaxy78: " + Environment.NewLine;
+                    response += apigeeServer.GetUser("zaxy78").RawResponse; //GetUsers().RawResponse; // wp7Impl.PerformGet(apigeeUrl + "/users");
                     break;
                 case HttpTools.RequestTypes.Post:
-                    var user = new ApigeeUser() { Username = "test" + DateTime.Now.Millisecond, Firstname = "Apgiee.Net", Lastname = "WP7_TestApp", Email =  "test"+DateTime.Now.Millisecond+"@zaxyinc.com", Password = "123456" };
+                    var user = new ApigeeUser() { Username = "test" + DateTime.Now.Millisecond, Name = "WP7_TestApp User", Email =  "test"+DateTime.Now.Millisecond+"@zaxyinc.com", Password = "123456" };
                     response = "Creating account for user: " + user.Username + "(" + user.Email + ")" + Environment.NewLine;
                     response += apigeeServer.CreateAppUser(user).RawResponse; //wp7Impl.PerformJsonRequest<string>(apigeeUrl + "/users", HttpTools.RequestTypes.Post, user);
                     break;

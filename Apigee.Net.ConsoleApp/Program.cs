@@ -25,6 +25,7 @@ namespace Apigee.Net.ConsoleApp
                 Console.WriteLine("3. Login");
                 Console.WriteLine("4. Show All Groups");
                 Console.WriteLine("5. Show All Users");
+                Console.WriteLine("6. Show User");
 
                 switch (Convert.ToInt16(Console.ReadLine()))
                 {
@@ -42,6 +43,9 @@ namespace Apigee.Net.ConsoleApp
                         break;
                     case 5:
                         GetUsers();
+                        break;
+                    case 6:
+                        GetUser();
                         break;
                     default:
                         Console.WriteLine("Invalid choice. try again");
@@ -103,6 +107,20 @@ namespace Apigee.Net.ConsoleApp
             else Console.WriteLine("Error getting Users: " + response.Error.Message);
         }
 
+        private static void GetUser()
+        {
+            Console.WriteLine("Enter selected username:");
+            var user = Console.ReadLine();
+
+            var response = aClient.GetUser(user);
+            if (response.success)
+            {
+                var userFound = (ApigeeUser)response.ResponseData;
+                Console.WriteLine("Users found !");
+                Console.WriteLine(userFound.Username + ": " + userFound.Email + "; UUID: " + userFound.Uuid);
+            }
+            else Console.WriteLine("Error getting Users: " + response.Error.Message);
+        }
 
         private static void AddNewUser()
         {
@@ -110,10 +128,8 @@ namespace Apigee.Net.ConsoleApp
             Console.WriteLine("Creating a New User: Infomation");
             Console.WriteLine("User Name");
             newUser.Username = Console.ReadLine();
-            Console.WriteLine("First Name");
-            newUser.Firstname = Console.ReadLine();
-            Console.WriteLine("Last Name");
-            newUser.Lastname = Console.ReadLine();
+            Console.WriteLine("Full Name");
+            newUser.Name = Console.ReadLine();
             Console.WriteLine("Email");
             newUser.Email = Console.ReadLine();
             Console.WriteLine("Password");
