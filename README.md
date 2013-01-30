@@ -24,7 +24,8 @@ This way we write the Portble Library logic, in terms of handling Apigee calls a
 each platform, supplies its best way to send the Http requests.
 
 Currently we have IHttpTools Implementations for .Net 4.5 & Windows Phone 7.
-the implementations are inside the relevant Sample App.
+
+All implementations are inside the relevant Sample App.
 
 Try It!
 
@@ -32,7 +33,7 @@ Usage is as follows :
 
 
             ApigeeClient apiClient; 
-            apiClient = new ApigeeClient("http://api.usergrid.com/xxx/sandbox/", new IHttpToolsImplementation()
+            apiClient = new ApigeeClient("http://api.usergrid.com/xxx/sandbox/", new IHttpToolsImplementation());
 
             //Get a collection of all users 
             var allUsers = apiClient.GetUsers();
@@ -61,4 +62,5 @@ Usage is as follows :
             //Lookup a user by token ID
             var username = apiClient.LookUpToken(token);
             
-            and more & more methods every commit.
+
+And more & more methods to come. updates every commit.
