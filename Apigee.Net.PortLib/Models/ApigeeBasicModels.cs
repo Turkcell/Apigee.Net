@@ -24,7 +24,7 @@ namespace Apigee.Net.Models
                 Password = (usr["password"] ?? "").ToString(),
                 Name = (usr["name"] ?? "").ToString(),
                 Title = (usr["title"] ?? "").ToString(),
-                Email = (usr["Email"] ?? "").ToString(),
+                Email = (usr["email"] ?? "").ToString(),
                 Tel = (usr["tel"] ?? "").ToString(),
                 HomePage = (usr["homepage"] ?? "").ToString(),
                 Bday = (usr["bday"] ?? "").ToString(),
