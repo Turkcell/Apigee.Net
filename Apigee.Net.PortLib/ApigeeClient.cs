@@ -29,10 +29,10 @@ namespace Apigee.Net.PortLib
         /// Create a new Apigee Client
         /// </summary>
         /// <param name="userGridUrl">The Base URL To the UserGrid</param>
-        public ApigeeClient(string userGridUrl, ImplementationStruct currentImple)
+        public ApigeeClient(string userGridUrl, IHttpTools currentImplementation)
         {
             this.UserGridUrl = userGridUrl;
-            this.IhttpTools = currentImple.iHttpTools;
+            this.IhttpTools = currentImplementation;
             this.isAuthenticated = false;
         }
 
@@ -80,7 +80,7 @@ namespace Apigee.Net.PortLib
         }
 
         /// <summary>
-        /// Performs a Get agianst the UserGridUrl + provided path
+        /// Performs a ***Get*** agianst the UserGridUrl + provided path
         /// </summary>
         /// <typeparam name="retrunT">Return Type</typeparam>
         /// <param name="path">Sub Path Of the Get Request</param>
@@ -118,20 +118,7 @@ namespace Apigee.Net.PortLib
                     List<ApigeeUser> results = new List<ApigeeUser>();
                     foreach (var usr in (JToken)response.ResponseData)
                     {
-                        results.Add(new ApigeeUser
-                        {
-                            Uuid = (usr["uuid"] ?? "").ToString(),
-                            Username = (usr["username"] ?? "").ToString(),
-                            Password = (usr["password"] ?? "").ToString(),
-                            Name = (usr["name"] ?? "").ToString(),
-                            Title = (usr["title"] ?? "").ToString(),
-                            Email = (usr["Email"] ?? "").ToString(),
-                            Tel = (usr["tel"] ?? "").ToString(),
-                            HomePage = (usr["homepage"] ?? "").ToString(),
-                            Bday = (usr["bday"] ?? "").ToString(),
-                            Picture = (usr["picture"] ?? "").ToString(),
-                            Url = (usr["url"] ?? "").ToString()
-                        });
+                        results.Add(ApigeeUser.Parse(usr));
                     }
                     // put users List as response data
                     response.ResponseData = results;
@@ -153,26 +140,11 @@ namespace Apigee.Net.PortLib
             if (response.success)
             {
                 try
-                {   ApigeeUser user;
+                {   
                     var usr = ((JToken)response.ResponseData)[0];
                     
-                    user = new ApigeeUser
-                    {
-                        Uuid = (usr["uuid"] ?? "").ToString(),
-                        Username = (usr["username"] ?? "").ToString(),
-                        Password = (usr["password"] ?? "").ToString(),
-                        Name = (usr["name"] ?? "").ToString(),
-                        Title = (usr["title"] ?? "").ToString(),
-                        Email = (usr["Email"] ?? "").ToString(),
-                        Tel = (usr["tel"] ?? "").ToString(),
-                        HomePage = (usr["homepage"] ?? "").ToString(),
-                        Bday = (usr["bday"] ?? "").ToString(),
-                        Picture = (usr["picture"] ?? "").ToString(),
-                        Url = (usr["url"] ?? "").ToString()
-                    };
-
                     // put user as response data
-                    response.ResponseData = user;
+                    response.ResponseData = ApigeeUser.Parse(usr);
                 }
                 catch (Exception)
                 {
@@ -192,15 +164,9 @@ namespace Apigee.Net.PortLib
                 try
                 {
                     var results = new List<ApigeeGroup>();
-                    foreach (var usr in (JToken)response.ResponseData)
+                    foreach (var group in (JToken)response.ResponseData)
                     {
-                        results.Add(new ApigeeGroup
-                        {
-                            Uuid = (usr["uuid"] ?? "").ToString(),
-                            Created = (usr["created"] ?? "").ToString(),
-                            Path = (usr["path"] ?? "").ToString(),
-                            Title = (usr["title"] ?? "").ToString(),
-                        });
+                        results.Add(ApigeeGroup.Parse(group));
                     }
                     // put groups list as response data
                     response.ResponseData = results;
@@ -223,15 +189,9 @@ namespace Apigee.Net.PortLib
                 try
                 {
                     var results = new List<ApigeeRole>();
-                    foreach (var usr in (JToken)response.ResponseData)
+                    foreach (var role in (JToken)response.ResponseData)
                     {
-                        results.Add(new ApigeeRole
-                        {
-                            Uuid = (usr["uuid"] ?? "").ToString(),
-                            Created = (usr["created"] ?? "").ToString(),
-                            RoleName = (usr["roleName"] ?? "").ToString(),
-                            Title = (usr["title"] ?? "").ToString(),
-                        });
+                        results.Add(ApigeeRole.Parse(role));
                     }
                     // put roles list as response data
                     response.ResponseData = results;
@@ -244,6 +204,86 @@ namespace Apigee.Net.PortLib
             }
             return response;
         }
+
+        /// <summary>
+        /// On success, responseData will be a List<T> of all entities 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="TParser"></param>
+        /// <returns></returns>
+        public ApigeeResponse GetEntities<T>(string collection, Func<JToken,T> TParser)
+        {
+            var rawResults = PerformRequest<string>("/" + collection);
+            
+            //parse response
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
+            {
+                try
+                {
+                    List<T> results = new List<T>();
+                    foreach (var entity in (JToken)response.ResponseData)
+                    {
+                        results.Add( TParser(entity) );
+                    }
+                    // put users List as response data
+                    response.ResponseData = results;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing "+collection+" entities");
+                }
+            }
+            return response;
+        }
+
+        /// <summary>
+        ///  On success, responseData will be a List<T> of all Entity2 items
+        ///  which are connected to Item from Entity1 in the verb connection
+        ///  For example GetConnections("users","jhon","like") will return Pictures jhon likes.
+        /// </summary>
+        /// <typeparam name="Entity2Type">Type of Entity2 in the verb connection</typeparam>
+        /// <param name="entity1">Collection of entity1 in the verb connection</param>
+        /// <param name="item">The specific item in Entity1</param>
+        /// <param name="verb">The connection vers. for example: "like", "attending", etc.</param>
+        /// <param name="direction">Which side of the verb you want? True for "Connections", False for "Connecting"</param>
+        /// <param name="TParser">Parser for Entity2 Type (Return Type)</param>
+        /// <returns></returns>
+        public ApigeeResponse GetConnections<Entity2Type>(string entity1, string item, string verb, bool direction, Func<JToken, Entity2Type> TParser)
+        {
+            var path = "/" + entity1 + "/" + item + "/";
+            path += direction ? "Connection" : "Connecting";
+            
+            var rawResults = PerformRequest<string>(path);
+
+            //parse response
+            var response = new ApigeeResponse(rawResults, true);
+            if (response.success)
+            {
+                try
+                {
+                    List<Entity2Type> results = new List<Entity2Type>();
+                    foreach (var entity in (JToken)response.ResponseData)
+                    {
+                        //filer: take only specific Verb
+                        var connection = entity["metadata"]["connection"];
+                        if (connection != null && connection.ToString() == verb)
+                            results.Add(TParser(entity));
+                    }
+                    // put users List as response data
+                    response.ResponseData = results;
+                }
+                catch (Exception)
+                {
+                    response.success = false;
+                    response.Error = new ApigeeResponseError("Error parsing connections: " + path);
+                }
+            }
+            return response;
+        }
+
 
         public string CreateGroup(ApigeeGroup newGroup)
         {
@@ -286,7 +326,15 @@ namespace Apigee.Net.PortLib
             var reqString = string.Format("/token/?grant_type=password&username={0}&password={1}", username, password);
             var rawResults = PerformRequest<string>(reqString);
             // paser response and let ApigeeResponse get you your wanted result
-            return new ApigeeResponse(JObject.Parse(rawResults), "access_token");
+            try
+            {
+                var jsonResult = JObject.Parse(rawResults);
+                return new ApigeeResponse(jsonResult, "access_token");
+            }
+            catch (Exception)
+            {
+                return new ApigeeResponse() {Error = new ApigeeResponseError("Connection to server failed."), success = false};
+            }
         }
         private ApigeeResponse LookUpToken(string token)
         {

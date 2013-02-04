@@ -12,7 +12,7 @@ namespace Apigee.Net.ConsoleApp
     class Program
     {
 
-        static ApigeeClient aClient = new ApigeeClient("http://api.usergrid.com/zaxyinc/imhere/", new ImplementationStruct() { iHttpTools = new ApigeeNET45() } );
+        static ApigeeClient aClient = new ApigeeClient("http://api.usergrid.com/zaxyinc/imhere/", new ApigeeNET45() );
         
         static void Main(string[] args)
         {

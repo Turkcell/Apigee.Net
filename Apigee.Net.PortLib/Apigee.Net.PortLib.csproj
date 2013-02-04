@@ -40,7 +40,6 @@
     <Compile Include="ApigeeClient.cs" />
     <Compile Include="ApigeeResponse.cs" />
     <Compile Include="Interfaces\IHttpTools.cs" />
-    <Compile Include="Interfaces\ImplementationStruct.cs" />
     <Compile Include="Models\ApigeeBasicModels.cs" />
     <Compile Include="Models\ApiResponse\CreateApigeeAccountResponse.cs" />
     <Compile Include="Networking\HttpTools.cs" />

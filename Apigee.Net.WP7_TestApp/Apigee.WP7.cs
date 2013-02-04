@@ -33,7 +33,6 @@ namespace Apigee.Net.WP7_TestApp
         {
             // This class stores the State of the request.
             public HttpWebRequest request;
-            public HttpWebResponse response;
             public object responseObject;
             
             

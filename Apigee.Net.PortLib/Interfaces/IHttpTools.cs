@@ -6,6 +6,10 @@ using Apigee.Net.Networking;
 
 namespace Apigee.Net.PortLib
 {
+    /// <summary>
+    /// Apigee.Net Portable Library contains Interfaces which must be implemeneted per Plaftorm (.Net4.5, Win8, WP7, WP8).
+    /// you must supply all required implementations for those interfaces - in order to use the Library on your platform. 
+    /// </summary>
     public interface IHttpTools
     {
         string PerformGet(string url);

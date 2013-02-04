@@ -39,7 +39,7 @@ namespace Apigee.Net.WP7_TestApp
             HttpWorker.RunWorkerCompleted += HttpWorker_RunWorkerCompleted;
             wp7Impl = new ApigeeWP7Implementation();
 
-            tbApigeeUrl.Text = "http://api.usergrid.com/zaxyinc/sandbox";
+            tbApigeeUrl.Text = "http://api.usergrid.com/zaxyinc/imhere";
         }
 
         private bool verifyURL()
@@ -70,13 +70,13 @@ namespace Apigee.Net.WP7_TestApp
         private void HttpWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             string response = "";
-            apigeeServer = new ApigeeClient(apigeeUrl, new ImplementationStruct() { iHttpTools = new ApigeeWP7Implementation() });
+            apigeeServer = new ApigeeClient(apigeeUrl, new ApigeeWP7Implementation());
             switch((HttpTools.RequestTypes)e.Argument)
             {
                 
                 case HttpTools.RequestTypes.Get:
-                    response = "Getting User zaxy78: " + Environment.NewLine;
-                    response += apigeeServer.GetUser("zaxy78").RawResponse; //GetUsers().RawResponse; // wp7Impl.PerformGet(apigeeUrl + "/users");
+                    response = "Getting OrgEvents: " + Environment.NewLine;
+                    response += apigeeServer.GetUsers().RawResponse;  // wp7Impl.PerformGet(apigeeUrl + "/users");
                     break;
                 case HttpTools.RequestTypes.Post:
                     var user = new ApigeeUser() { Username = "test" + DateTime.Now.Millisecond, Name = "WP7_TestApp User", Email =  "test"+DateTime.Now.Millisecond+"@zaxyinc.com", Password = "123456" };
