@@ -284,36 +284,24 @@ namespace Apigee.Net.PortLib
             return response;
         }
 
+        public ApigeeResponse PostConnectionRequest(string entity1, string item, string verb, string entity2, string item2)
+        {
+            return PreformConnectionRequest(entity1, item, verb, entity2, item2, HttpTools.RequestTypes.Post); 
+        }
 
-        public ApigeeResponse POSTConnections<Entity2Type>(string entity1, string item, string verb, string entity2, string item2)
+        public ApigeeResponse DeleteConnectionRequest(string entity1, string item, string verb, string entity2, string item2)
+        {
+            return PreformConnectionRequest(entity1, item, verb, entity2, item2, HttpTools.RequestTypes.Delete);
+        }
+
+        public ApigeeResponse PreformConnectionRequest(string entity1, string item, string verb, string entity2, string item2, HttpTools.RequestTypes request)
         {
             var path = "/" + entity1 + "/" + item + "/" + verb + "/" + entity2 + "/" + item2;
-
-            var rawResults = PerformRequest<string>(path);
+            
+            var rawResults = PerformRequest<string>(path,request,null);
 
             //parse response
             var response = new ApigeeResponse(rawResults, true);
-            if (response.success)
-            {
-                try
-                {
-                    List<Entity2Type> results = new List<Entity2Type>();
-                    foreach (var entity in (JToken)response.ResponseData)
-                    {
-                        //filer: take only specific Verb
-                        var connection = entity["metadata"]["connection"];
-                        if (connection != null && connection.ToString() == verb)
-                            results.Add(TParser(entity));
-                    }
-                    // put users List as response data
-                    response.ResponseData = results;
-                }
-                catch (Exception)
-                {
-                    response.success = false;
-                    response.Error = new ApigeeResponseError("Error parsing connections: " + path);
-                }
-            }
             return response;
         }
 
