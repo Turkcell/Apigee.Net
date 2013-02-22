@@ -1,10 +1,9 @@
-Apigee.Net 
+Apigee Usergrid SDK for .Net (C#) 
 ==========
 
 This is a Portable Library of C# Client for the Apigee Usergrid : https://apigee.com/usergrid/
 
-This Portable Library is in early Alpha - only works with basic functionalities.
-Results May Vary. 
+This Portable Library is stil in Beta. You are most welcome to fork and conribute!
 
 What's a Portable Library? 
 =========
