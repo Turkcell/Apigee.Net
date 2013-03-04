@@ -11,6 +11,10 @@
     <AssemblyName>Apigee.Net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +54,7 @@
   <ItemGroup>
     <Compile Include="ApigeeClient.cs" />
     <Compile Include="Models\ApiResponse\CreateApigeeAccountResponse.cs" />
-    <Compile Include="Models\ApigeeUserModel.cs" />
+    <Compile Include="Models\ApigeeBasicModels.cs" />
     <Compile Include="Networking\HttpTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

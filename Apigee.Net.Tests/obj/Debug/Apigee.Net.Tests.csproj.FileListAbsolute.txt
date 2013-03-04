@@ -15,3 +15,17 @@ F:\Projects\Apigee.Net\Apigee.Net.Tests\obj\Debug\Apigee.Net.Tests.dll
 F:\Projects\Apigee.Net\Apigee.Net.Tests\obj\Debug\Apigee.Net.Tests.pdb
 F:\Projects\Apigee.Net\Apigee.Net.Tests\bin\Debug\Newtonsoft.Json.dll
 F:\Projects\Apigee.Net\Apigee.Net.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\obj\Debug\Apigee.Net.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\obj\Debug\Apigee.Net.Tests.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Apigee.Net.Tests.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Apigee.Net.Tests.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Apigee.Net.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Krystalware.UploadHelper.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\fastJSON.dll
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Apigee.Net.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\nunit.framework.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\Krystalware.UploadHelper.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\bin\Debug\fastJSON.pdb
+C:\Users\Zaxy\Documents\GitHub\Apigee.Net\Apigee.Net.Tests\obj\Debug\Apigee.Net.Tests.pdb

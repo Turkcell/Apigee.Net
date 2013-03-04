@@ -89,15 +89,15 @@ namespace Apigee.Net
 
         #region Account Management
 
-        public List<ApigeeUserModel> GetUsers()
+        public List<ApigeeUser> GetUsers()
         {
             var rawResults = PerformRequest<string>("/users");
             var users = GetEntitiesFromJson(rawResults);
             
-            List<ApigeeUserModel> results = new List<ApigeeUserModel>();
+            List<ApigeeUser> results = new List<ApigeeUser>();
             foreach (var usr in users)
             {
-                results.Add(new ApigeeUserModel { 
+                results.Add(new ApigeeUser { 
                     Uuid = (usr["uuid"] ?? "").ToString(),
                     Username = (usr["username"] ?? "").ToString(),
                     Password = (usr["password"] ?? "").ToString(),
@@ -116,9 +116,91 @@ namespace Apigee.Net
             return results;
         }
 
-        public string CreateAccount(ApigeeUserModel accountModel)
+        /// <summary>
+        /// uses the Role Uuid in request
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public List<ApigeeUser> GetRoleUsers(ApigeeRole role)
         {
-            var rawResults = PerformRequest<string>("/users", HttpTools.RequestTypes.Post, accountModel);
+            return GetRoleUsers(role.Uuid);
+        }
+        /// <summary>
+        /// uses the RoleName provided in the  request
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <returns></returns>
+        public List<ApigeeUser> GetRoleUsers(string roleName)
+        {
+            var rawResults = PerformRequest<string>("/roles/"+roleName+"/users");
+            var users = GetEntitiesFromJson(rawResults);
+
+            List<ApigeeUser> results = new List<ApigeeUser>();
+            foreach (var usr in users)
+            {
+                results.Add(new ApigeeUser
+                {
+                    Uuid = (usr["uuid"] ?? "").ToString(),
+                    Username = (usr["username"] ?? "").ToString(),
+                    Password = (usr["password"] ?? "").ToString(),
+                    Lastname = (usr["lastname"] ?? "").ToString(),
+                    Firstname = (usr["firstname"] ?? "").ToString(),
+                    Title = (usr["title"] ?? "").ToString(),
+                    Email = (usr["Email"] ?? "").ToString(),
+                    Tel = (usr["tel"] ?? "").ToString(),
+                    HomePage = (usr["homepage"] ?? "").ToString(),
+                    Bday = (usr["bday"] ?? "").ToString(),
+                    Picture = (usr["picture"] ?? "").ToString(),
+                    Url = (usr["url"] ?? "").ToString()
+                });
+            }
+
+            return results;
+        }
+
+
+        public List<ApigeeGroup> GetGroups()
+        {
+            var rawResults = PerformRequest<string>("/groups");
+            var groups = GetEntitiesFromJson(rawResults);
+            
+            var results = new List<ApigeeGroup>();
+            foreach (var usr in groups)
+            {
+                results.Add(new ApigeeGroup { 
+                    Uuid = (usr["uuid"] ?? "").ToString(),
+                    Created = (usr["created"] ?? "").ToString(),
+                    Path = (usr["path"] ?? "").ToString(),
+                    Title = (usr["title"] ?? "").ToString(),
+                });
+            }
+
+            return results;
+        }
+
+        public List<ApigeeRole> GetRoles()
+        {
+            var rawResults = PerformRequest<string>("/roles");
+            var roles = GetEntitiesFromJson(rawResults);
+
+            var results = new List<ApigeeRole>();
+            foreach (var usr in roles)
+            {
+                results.Add(new ApigeeRole
+                {
+                    Uuid = (usr["uuid"] ?? "").ToString(),
+                    Created = (usr["created"] ?? "").ToString(),
+                    RoleName = (usr["roleName"] ?? "").ToString(),
+                    Title = (usr["title"] ?? "").ToString(),
+                });
+            }
+
+            return results;
+        }
+
+        public string CreateGroup(ApigeeGroup newGroup)
+        {
+            var rawResults = PerformRequest<string>("/groups", HttpTools.RequestTypes.Post, newGroup);
             var entitiesResult = GetEntitiesFromJson(rawResults);
             if (entitiesResult != null)
             {
@@ -126,11 +208,50 @@ namespace Apigee.Net
             }
             else
             {
-                return UpdateAccount(accountModel);
+                throw new InvalidOperationException("Failed to creat a group");
             }
         }
 
-        public string UpdateAccount(ApigeeUserModel accountModel)
+        
+        public string CreateAppUser(ApigeeUser newAppUser)
+        {
+            var rawResults = PerformRequest<string>("/users", HttpTools.RequestTypes.Post, newAppUser);
+            var entitiesResult = GetEntitiesFromJson(rawResults);
+            if (entitiesResult != null)
+            {
+                var newUserUuid = entitiesResult[0]["uuid"].ToString();
+                AddRole2User(newUserUuid, "appuser");   //Add AppUser role
+                return newUserUuid;
+            }
+            else
+            {
+                return UpdateAccount(newAppUser);
+            }
+        }
+
+        public string AddRole2User(ApigeeUser user, string newRole)
+        {
+            return AddRole2User(user.Uuid, newRole);
+        }
+
+        public string AddRole2User(String userUuid, string newRole)
+        {
+            var path = "/users/" + userUuid + "/roles/" + newRole;
+            var rawResults = PerformRequest<string>(path, HttpTools.RequestTypes.Post, "" );
+            var entitiesResult = GetEntitiesFromJson(rawResults);
+            if (entitiesResult != null)
+            {
+
+                return entitiesResult[0]["uuid"].ToString();
+            }
+            else
+            {
+                throw new InvalidOperationException("Failed to add role ["+newRole+"] to user ("+userUuid+")");
+            }
+        }
+
+
+        public string UpdateAccount(ApigeeUser accountModel)
         {
             var rawResults = PerformRequest<string>("/users/" + accountModel.Username, HttpTools.RequestTypes.Put, accountModel);
 
@@ -163,3 +284,6 @@ namespace Apigee.Net
 
     }
 }
+
+
+
